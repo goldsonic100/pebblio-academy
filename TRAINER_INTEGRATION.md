@@ -1,15 +1,11 @@
 # Pebblio Academy trainer experience
 
-The trainer studio is available at `trainers.html` and is a browser-native implementation for the current static Firebase-hosted Pebblio app. Features include:
+The trainer library at `trainers-home.html` links to the practice studio (`trainers.html`) for seven tracks: AMC 8, AMC 10, AMC 12, AIME-style, General Math, Reading Comprehension, and Vocabulary. Current question content is original Pebblio-authored practice inspired by typical contest formats. It is not official contest material and not copied from TrainerSite.
 
-- AMC 8/10/12, AIME-style, general math, reading comprehension, and vocabulary practice tracks.
-- Topic, difficulty, and year filters; question selection; avoid-answered and adaptive weak-topic practice.
-- Multiple-choice and numeric answer validation, retries, hints, step-by-step guided hints, worked solutions, and a local content-report email link.
-- Mistake review, first-try topic accuracy chart, recent activity, stats, and a configurable timed challenge with results.
-- Local progress export/import and clearing.
+Features in the browser implementation: topic/difficulty/year filters, adaptive weak-topic selection, specific question choice, hints, step-by-step guidance, worked solutions, content reporting by email, missed-question review, accuracy by topic, recent activity, configurable timed challenges, scorecards, progress export/import, and reset. The student dashboard widget reads the local trainer stats and links to the trainer catalog and scorecards. Complete a timed challenge while signed in to receive one local XP/coin bonus per day.
 
-## Limitations and future backend work
+## Sync status and production considerations
 
-Trainer progress is saved in browser localStorage by Pebblio user ID; it does not sync across devices or to Firebase and isn't wired into classroom assignments/grades. Guided steps are authored hints, not AI chat. The original TrainerSite trainers call Flask APIs for problem sets, solutions, guided AI, issue submissions, and persistent account data. Those server features and datasets aren't made available by copying their frontend into this static app. No TrainerSite questions or backend code were copied here. To enable parity, deploy an authorized API and dataset, then add authenticated Firebase/server persistence, assignment/grade integration, server-side AI proxy (never expose provider secrets in browser code), reporting endpoints, and comprehensive verified problem content.
+Trainer progress and challenge scorecards are kept in `localStorage` under the Pebblio user ID, so they persist only in that browser. Classroom sync currently uses a shared Realtime Database path and is not suitable for private per-user trainer records without authenticated Firebase rules and a schema redesign. The Firebase config in this repository appears to contain demo values. This branch therefore does not pretend the trainer has real cross-device sync.
 
-The sample bank is intentionally small and consists of original Pebblio examples; these are illustrative practice items, not official contest questions.
+A secure future sync service should authenticate users with Firebase Auth, store trainer state under a UID-scoped path, apply restrictive database rules, validate challenge rewards server-side (for example via Cloud Functions), and expose an explicit offline/local fallback. Do not store AI provider secrets in frontend files. TrainerSite's original Flask endpoints and problem data are not included; use only authorized datasets and services. Sample question bank is small and needs editorial review and broader authored content before production use.
