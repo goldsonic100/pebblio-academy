@@ -1,2 +1,244 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Choose an interactive Pebblio Academy practice trainer."><title>Trainer Library | Pebblio Academy</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="trainers.css"></head><body><header class="topbar"><a class="brand" href="index.html"><img src="pebblio-logo.png" alt="Pebblio"><span>Academy</span></a><nav><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="trainers-home.html" aria-current="page">Trainer library</a></nav><div class="account-actions"><a href="trainer-dashboard.html">My practice</a></div></header><main class="page"><section class="intro"><p class="eyebrow">PEBBLIO PRACTICE LIBRARY</p><h1>Choose your next challenge</h1><p>Practice contest-style math, strengthen core skills, or work on reading and vocabulary. These are original practice questions inspired by common contest formats—not official contest questions.</p></section><section class="catalog-grid" id="trainer-catalog"></section><section class="panel" style="margin-top:20px"><h2>How practice works</h2><p>Each trainer includes topic and difficulty filters, explanations, guided hints, missed-question review, and optional timed challenges. Progress is stored locally in this browser. Challenge rewards are limited to one per account per day to keep XP and coins meaningful.</p><a class="button primary" href="trainer-dashboard.html">View my practice stats</a></section></main><script>const items=[['AMC 8','Grades 6–8 contest-style math','🧮','Algebra, geometry, counting, fractions, and number theory.'],['AMC 10','Intermediate contest-style math','📐','Build problem-solving confidence across core contest topics.'],['AMC 12','Advanced high-school contest-style math','📊','Practice algebra, probability, geometry, and number theory.'],['AIME','Invitational-style problems','🏆','Try multi-step numeric-answer problems and track accuracy.'],['General Math','Everyday math foundations','✏️','Fractions, percentages, algebra, and more.'],['Reading Comprehension','Read closely and reason from evidence','📖','Practice main idea, inference, and context clues.'],['Vocabulary','Grow word knowledge in context','🔤','Explore synonyms, word meaning, and context clues.']];document.getElementById('trainer-catalog').innerHTML=items.map(([track,subtitle,icon,desc])=>`<article class="panel trainer-card"><div class="trainer-icon">${icon}</div><p class="eyebrow">${subtitle}</p><h2>${track}</h2><p>${desc}</p><a class="button primary" href="trainers.html?track=${encodeURIComponent(track)}">Start ${track} practice</a></article>`).join('');</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Choose an interactive Pebblio Academy practice trainer.">
+  <title>Trainer Library | Pebblio Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --ink: #14171f;
+      --muted: #5b6472;
+      --accent: #5b4fe8;
+      --accent-dark: #453bc4;
+      --border: #e4e6ec;
+      --shadow: rgba(18, 24, 38, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    a { color: inherit; text-decoration: none; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 32px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      font-size: 1.2rem;
+    }
+    .brand img { height: 28px; width: auto; display: block; }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    nav a[aria-current="page"] { color: var(--ink); }
+    .account-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 3.3rem);
+      letter-spacing: -0.05em;
+    }
+    .intro p:last-child {
+      max-width: 760px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px var(--shadow);
+    }
+    .trainer-card {
+      padding: 22px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
+    }
+    .trainer-icon {
+      width: 52px;
+      height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: #eef1ff;
+      font-size: 1.75rem;
+      margin-bottom: 16px;
+    }
+    .trainer-card .eyebrow {
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+      font-size: 0.66rem;
+    }
+    .trainer-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+    }
+    .trainer-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      width: fit-content;
+    }
+    .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .button.primary:hover {
+      background: var(--accent-dark);
+    }
+    .action-panel {
+      margin-top: 20px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .action-panel h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    .action-panel p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    @media (max-width: 700px) {
+      .topbar { padding: 14px 18px; }
+      nav { display: none; }
+      .page { padding-top: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="pebblio-logo.png" alt="Pebblio"><span>Academy</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="trainers-home.html" aria-current="page">Trainer library</a>
+    </nav>
+    <div class="account-actions">
+      <a href="trainer-dashboard.html">My practice</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <p class="eyebrow">Pebblio practice library</p>
+      <h1>Choose your next challenge</h1>
+      <p>Practice contest-style math, build fluency with foundational skills, or work on reading and vocabulary. These are original practice activities inspired by common contest formats and learning routines—not official contest questions.</p>
+    </section>
+
+    <section class="catalog-grid" id="trainer-catalog"></section>
+
+    <section class="panel action-panel">
+      <h2>How practice works</h2>
+      <p>Each trainer includes topic and difficulty filters, hints, worked solutions, missed-question review, and optional timed challenges. Progress is saved in this browser so students can pick up where they left off.</p>
+      <a class="button primary" href="trainer-dashboard.html">View my progress</a>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    const tracks = [
+      { name: 'AMC 8', icon: '🧮', audience: 'Grades 6–8 contest math', summary: 'Algebra, geometry, counting, fractions, and number theory.' },
+      { name: 'AMC 10', icon: '📐', audience: 'Intermediate contest math', summary: 'Build conceptual problem-solving across core contest topics.' },
+      { name: 'AMC 12', icon: '📊', audience: 'Advanced contest math', summary: 'Practice algebra, probability, geometry, and number theory.' },
+      { name: 'AIME', icon: '🏆', audience: 'Invitational-style practice', summary: 'Try multi-step numeric-answer problems and track accuracy.' },
+      { name: 'General Math', icon: '✏️', audience: 'Core math foundations', summary: 'Fractions, percentages, ratios, measurement, and algebra.' },
+      { name: 'Reading Comprehension', icon: '📖', audience: 'Evidence-based reading', summary: 'Main idea, inference, and textual evidence practice.' },
+      { name: 'Vocabulary', icon: '🔤', audience: 'Word study', summary: 'Context clues, synonyms, and word meaning in practice.' }
+    ];
+
+    const escapeHtml = (text) => String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    const catalog = document.getElementById('trainer-catalog');
+    catalog.innerHTML = tracks.map((track) => `
+      <article class="panel trainer-card">
+        <div class="trainer-icon" aria-hidden="true">${track.icon}</div>
+        <p class="eyebrow">${escapeHtml(track.audience)}</p>
+        <h2>${escapeHtml(track.name)}</h2>
+        <p>${escapeHtml(track.summary)}</p>
+        <a class="button primary" href="trainers.html?track=${encodeURIComponent(track.name)}">Start ${escapeHtml(track.name)} practice</a>
+      </article>
+    `).join('');
+  </script>
+</body>
+</html>
