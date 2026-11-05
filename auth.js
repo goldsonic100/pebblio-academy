@@ -138,22 +138,22 @@ async function createAccount({ username, email, password, role, firstName, lastN
     passwordHash,
     role: effectiveRole,
     createdAt: today,
-    verified: true,          // true because they completed the email code step
-    profilePicture: '',      // optional image URL, empty = show initials avatar
+    verified: true,
+    profilePicture: '',
     status: 'Active',
 
     firstName: firstName || '',
     lastName: lastName || '',
     schoolOrg: schoolOrg || '',
-    birthday: '',            // optional, added later from the dashboard
+    birthday: '',
 
     xp: 0,
     level: 1,
     coins: 0,
     streak: 0,
-    lastActiveDate: '',      // yyyy-mm-dd of last completed activity
+    lastActiveDate: '',
     totalLearningMinutes: 0,
-    recentActivity: []       // log of completed demo/real lessons, newest first
+    recentActivity: []
   };
 
   const users = getUsers();
@@ -174,7 +174,7 @@ function xpIntoLevel(xp){
 }
 
 function todayString(){
-  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  return new Date().toISOString().slice(0, 10);
 }
 
 function yesterdayString(){
@@ -183,9 +183,6 @@ function yesterdayString(){
   return d.toISOString().slice(0, 10);
 }
 
-/* Call this whenever a user genuinely finishes a course / trainer / test.
-   It's the only thing that should ever add XP, coins, learning time,
-   or move the streak — nothing here should fire just for visiting a page. */
 function completeActivity(user, { minutes = 15, xpGain = 25, coinGain = 10 } = {}){
   user.xp += xpGain;
   user.level = levelFromXP(user.xp);
@@ -194,11 +191,11 @@ function completeActivity(user, { minutes = 15, xpGain = 25, coinGain = 10 } = {
 
   const today = todayString();
   if(user.lastActiveDate === today){
-    // already completed something today — streak doesn't change again
+    // Daily streak was already advanced today.
   } else if(user.lastActiveDate === yesterdayString()){
     user.streak += 1;
   } else {
-    user.streak = 1; // missed a day (or first ever activity) — restart streak
+    user.streak = 1;
   }
   user.lastActiveDate = today;
 
@@ -206,23 +203,15 @@ function completeActivity(user, { minutes = 15, xpGain = 25, coinGain = 10 } = {
   return user;
 }
 
-/* ---------- admin actions ----------
-   These assume the caller has already confirmed the current user
-   is actually an admin — there's no server to enforce that for us,
-   so every admin page checks user.role === 'admin' before showing
-   any of this. */
+/* ---------- admin actions ---------- */
 
 function deleteUserAccount(userId){
   const users = getUsers().filter(u => u.userId !== userId);
   saveUsers(users);
 
-  // strip them out of any class rosters so they don't linger as a ghost ID
   const classes = readList(CLASSES_KEY);
   classes.forEach(c => { c.studentIds = c.studentIds.filter(id => id !== userId); });
   writeList(CLASSES_KEY, classes);
-  // Note: this does NOT cascade-delete a teacher's classes/courses/assignments,
-  // or a parent's family links — those remain, just no longer resolving to a
-  // real account. Good enough for a demo; a real product would clean those up too.
 }
 
 async function adminResetPassword(userId, newPassword){
@@ -241,10 +230,8 @@ function setUserRole(userId, newRole){
   target.role = newRole;
   saveUsers(users);
 }
-/* ---------- nav bar swap ----------
-   On pages with the normal Log In / Sign Up buttons, call this on
-   load. If someone's logged in, it swaps those buttons for
-   Dashboard / Logout instead. */
+
+/* ---------- nav bar swap ---------- */
 
 function wireAuthNav(){
   const user = getCurrentUser();
@@ -252,12 +239,20 @@ function wireAuthNav(){
 
   document.querySelectorAll('[data-auth-actions]').forEach(container => {
     container.innerHTML = `
-      <a href="dashboard.html" class="btn btn--ghost">Dashboard</a>
+      <a href="${dashboardUrlFor(user.role)}" class="btn btn--ghost">Dashboard</a>
       <button class="btn btn--solid" id="navLogoutBtn">Logout</button>
     `;
     const btn = container.querySelector('#navLogoutBtn');
     if(btn) btn.addEventListener('click', logout);
   });
 }
-
 document.addEventListener('DOMContentLoaded', wireAuthNav);
+
+/* Load the trainer navigation/dashboard integration on every page that
+   includes auth.js. It runs after normal auth navigation is wired. */
+document.addEventListener('DOMContentLoaded', () => {
+  const script = document.createElement('script');
+  script.src = 'trainer-site-integration.js';
+  script.async = true;
+  document.body.appendChild(script);
+}, { once: true });
