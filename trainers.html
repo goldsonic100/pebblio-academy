@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Practice math, reading, and vocabulary with Pebblio Academy trainers.">
+  <title>Practice Trainers | Pebblio Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="trainers.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="pebblio-logo.png" alt="Pebblio"><span>Academy</span></a>
+    <nav><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="trainers.html" aria-current="page">Trainers</a></nav>
+    <div class="account-actions" id="account-actions"></div>
+  </header>
+  <main class="page">
+    <section class="intro">
+      <p class="eyebrow">PRACTICE, LEARN, IMPROVE</p>
+      <h1>Your practice studio</h1>
+      <p>Pick a subject, tune your practice, and build skills one question at a time. Progress is saved in this browser.</p>
+    </section>
+
+    <section class="stats" aria-label="Your practice statistics">
+      <article class="stat"><span>Questions tried</span><strong id="stat-total">0</strong></article>
+      <article class="stat"><span>Accuracy</span><strong id="stat-accuracy">0%</strong></article>
+      <article class="stat"><span>Best streak</span><strong id="stat-streak">0</strong></article>
+      <article class="stat"><span>Practice sessions</span><strong id="stat-sessions">0</strong></article>
+    </section>
+
+    <section class="layout">
+      <aside class="panel settings">
+        <h2>Training settings</h2>
+        <label>Trainer
+          <select id="track">
+            <option value="AMC 8">AMC 8</option><option value="AMC 10">AMC 10</option>
+            <option value="AMC 12">AMC 12</option><option value="AIME">AIME</option>
+            <option value="General Math">General Math</option><option value="Reading">Reading Comprehension</option>
+            <option value="Vocabulary">Vocabulary</option>
+          </select>
+        </label>
+        <label>Topic
+          <select id="topic"><option value="All">All topics</option></select>
+        </label>
+        <label>Difficulty
+          <select id="difficulty"><option value="All">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select>
+        </label>
+        <label class="check"><input type="checkbox" id="unseen"> Avoid questions I've answered</label>
+        <label class="check"><input type="checkbox" id="smart" checked> Smart practice (focus on weak areas)</label>
+        <button class="button primary full" id="start-practice">Start practice</button>
+        <button class="button secondary full" id="start-exam">Start 10-question challenge</button>
+        <button class="button secondary full" id="show-mistakes">Review missed questions</button>
+        <p class="small muted">Your answers and settings are stored locally in this browser. Sign-in sync is not connected to trainer data yet.</p>
+      </aside>
+
+      <section class="panel practice" aria-live="polite">
+        <div class="question-head"><div><span class="pill" id="question-track">Ready</span><span class="pill subtle" id="question-level">Choose a trainer</span></div><span id="question-count" class="muted"></span></div>
+        <h2 id="question-title">Welcome to Pebblio practice</h2>
+        <div id="question-body" class="question-body">Choose a trainer on the left and start practicing. Answer history, accuracy, streaks, and missed questions will be tracked here.</div>
+        <div id="answer-area" class="answer-area"></div>
+        <div class="controls">
+          <button class="button primary" id="submit-answer" disabled>Check answer</button>
+          <button class="button secondary" id="hint-button" disabled>Give me a hint</button>
+          <button class="button secondary" id="next-question" hidden>Next question</button>
+          <button class="button text-button" id="skip-question" disabled>Skip</button>
+        </div>
+        <div id="feedback" class="feedback" role="status" hidden></div>
+        <div class="hint-box" id="hint-box" hidden></div>
+        <div class="exam-bar" id="exam-bar" hidden><span id="exam-progress"></span><span id="exam-timer"></span><button class="button danger" id="finish-exam">Finish challenge</button></div>
+      </section>
+    </section>
+
+    <section class="panel history-panel">
+      <div class="section-head"><div><h2>Recent practice</h2><p class="muted">A snapshot of your latest answers across all trainers.</p></div><button class="button text-button" id="clear-history">Clear history</button></div>
+      <div id="recent-list" class="recent-list"><p class="muted">No answers yet. Your practice history will show up here.</p></div>
+    </section>
+    <footer>Practice content is a Pebblio Academy starter set. More curriculum and teacher-assigned trainer links can be added as the library grows.</footer>
+  </main>
+  <script src="auth.js"></script>
+  <script src="trainers.js"></script>
+</body>
+</html>
