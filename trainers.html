@@ -7,6 +7,7 @@
   <title>Practice Trainers | Pebblio Academy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   <link rel="stylesheet" href="trainers.css">
 </head>
 <body>
@@ -16,68 +17,34 @@
     <div class="account-actions" id="account-actions"></div>
   </header>
   <main class="page">
-    <section class="intro">
-      <p class="eyebrow">PRACTICE, LEARN, IMPROVE</p>
-      <h1>Your practice studio</h1>
-      <p>Pick a subject, tune your practice, and build skills one question at a time. Progress is saved in this browser.</p>
-    </section>
-
+    <section class="intro"><p class="eyebrow">PRACTICE, LEARN, IMPROVE</p><h1>Your practice studio</h1><p>Choose a trainer, practice by topic and difficulty, review explanations, and track your progress. Your practice data is saved in this browser.</p></section>
     <section class="stats" aria-label="Your practice statistics">
-      <article class="stat"><span>Questions tried</span><strong id="stat-total">0</strong></article>
-      <article class="stat"><span>Accuracy</span><strong id="stat-accuracy">0%</strong></article>
-      <article class="stat"><span>Best streak</span><strong id="stat-streak">0</strong></article>
-      <article class="stat"><span>Practice sessions</span><strong id="stat-sessions">0</strong></article>
+      <article class="stat"><span>Questions answered</span><strong id="stat-total">0</strong></article><article class="stat"><span>First-try accuracy</span><strong id="stat-accuracy">0%</strong></article><article class="stat"><span>Best correct streak</span><strong id="stat-streak">0</strong></article><article class="stat"><span>Practice sessions</span><strong id="stat-sessions">0</strong></article>
     </section>
-
     <section class="layout">
       <aside class="panel settings">
         <h2>Training settings</h2>
-        <label>Trainer
-          <select id="track">
-            <option value="AMC 8">AMC 8</option><option value="AMC 10">AMC 10</option>
-            <option value="AMC 12">AMC 12</option><option value="AIME">AIME</option>
-            <option value="General Math">General Math</option><option value="Reading">Reading Comprehension</option>
-            <option value="Vocabulary">Vocabulary</option>
-          </select>
-        </label>
-        <label>Topic
-          <select id="topic"><option value="All">All topics</option></select>
-        </label>
-        <label>Difficulty
-          <select id="difficulty"><option value="All">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select>
-        </label>
-        <label class="check"><input type="checkbox" id="unseen"> Avoid questions I've answered</label>
-        <label class="check"><input type="checkbox" id="smart" checked> Smart practice (focus on weak areas)</label>
-        <button class="button primary full" id="start-practice">Start practice</button>
-        <button class="button secondary full" id="start-exam">Start 10-question challenge</button>
-        <button class="button secondary full" id="show-mistakes">Review missed questions</button>
-        <p class="small muted">Your answers and settings are stored locally in this browser. Sign-in sync is not connected to trainer data yet.</p>
+        <label>Trainer<select id="track"><option>AMC 8</option><option>AMC 10</option><option>AMC 12</option><option>AIME</option><option>General Math</option><option>Reading Comprehension</option><option>Vocabulary</option></select></label>
+        <label>Topic<select id="topic"><option value="All">All topics</option></select></label>
+        <div class="field-row"><label>Difficulty<select id="difficulty"><option value="All">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option><option>Very Hard</option></select></label><label>Contest/year<select id="year"><option value="All">All years</option></select></label></div>
+        <label class="check"><input type="checkbox" id="unseen"> Avoid questions I've answered</label><label class="check"><input type="checkbox" id="smart" checked> Smart practice (focus on weak areas)</label>
+        <button class="button primary full" id="start-practice">Start practice</button><button class="button secondary full" id="start-exam">Set up timed challenge</button><button class="button secondary full" id="select-problem">Choose a specific question</button><button class="button secondary full" id="show-mistakes">Review missed questions</button>
+        <p class="small muted">Progress saves locally per Pebblio account on this browser. It isn't synced to Firebase yet.</p>
       </aside>
-
       <section class="panel practice" aria-live="polite">
         <div class="question-head"><div><span class="pill" id="question-track">Ready</span><span class="pill subtle" id="question-level">Choose a trainer</span></div><span id="question-count" class="muted"></span></div>
-        <h2 id="question-title">Welcome to Pebblio practice</h2>
-        <div id="question-body" class="question-body">Choose a trainer on the left and start practicing. Answer history, accuracy, streaks, and missed questions will be tracked here.</div>
+        <h2 id="question-title">Welcome to Pebblio practice</h2><div id="question-body" class="question-body">Choose a trainer and start practicing. Explanations, answer history, accuracy, streaks, and missed questions will be tracked here.</div>
         <div id="answer-area" class="answer-area"></div>
-        <div class="controls">
-          <button class="button primary" id="submit-answer" disabled>Check answer</button>
-          <button class="button secondary" id="hint-button" disabled>Give me a hint</button>
-          <button class="button secondary" id="next-question" hidden>Next question</button>
-          <button class="button text-button" id="skip-question" disabled>Skip</button>
-        </div>
-        <div id="feedback" class="feedback" role="status" hidden></div>
-        <div class="hint-box" id="hint-box" hidden></div>
+        <div class="controls"><button class="button primary" id="submit-answer" disabled>Check answer</button><button class="button secondary" id="hint-button" disabled>Give me a hint</button><button class="button secondary" id="solution-button" disabled>Show solution</button><button class="button secondary" id="guided-button" disabled>Guided steps</button><button class="button secondary" id="next-question" hidden>Next question</button><button class="button text-button" id="skip-question" disabled>Skip</button><button class="button text-button" id="report-question" disabled>Report content issue</button></div>
+        <div id="feedback" class="feedback" role="status" hidden></div><div class="hint-box" id="hint-box" hidden></div><div class="hint-box guided-box" id="guided-box" hidden></div>
         <div class="exam-bar" id="exam-bar" hidden><span id="exam-progress"></span><span id="exam-timer"></span><button class="button danger" id="finish-exam">Finish challenge</button></div>
       </section>
     </section>
-
-    <section class="panel history-panel">
-      <div class="section-head"><div><h2>Recent practice</h2><p class="muted">A snapshot of your latest answers across all trainers.</p></div><button class="button text-button" id="clear-history">Clear history</button></div>
-      <div id="recent-list" class="recent-list"><p class="muted">No answers yet. Your practice history will show up here.</p></div>
-    </section>
-    <footer>Practice content is a Pebblio Academy starter set. More curriculum and teacher-assigned trainer links can be added as the library grows.</footer>
+    <section class="panel history-panel"><div class="section-head"><div><h2>Performance & recent practice</h2><p class="muted">Review activity and accuracy across topics.</p></div><div class="tools"><button class="button text-button" id="export-data">Export progress</button><label class="button text-button import-label" for="import-file">Import progress</label><input id="import-file" type="file" accept="application/json" hidden><button class="button text-button" id="clear-history">Clear history</button></div></div><div class="chart-wrap"><canvas id="topic-chart" aria-label="Accuracy by topic" role="img"></canvas></div><div id="recent-list" class="recent-list"><p class="muted">No answers yet. Your practice history will appear here.</p></div></section>
+    <footer>TrainerSite has Flask-backed datasets and AI features that cannot run in Pebblio's static site by copying the frontend alone. Pebblio's trainer features here run in-browser with original sample questions; guided steps are curated hints, not an AI chat.</footer>
   </main>
-  <script src="auth.js"></script>
-  <script src="trainers.js"></script>
+  <dialog id="selector-dialog"><form method="dialog" class="dialog-card"><button class="dialog-close" value="cancel" aria-label="Close">×</button><h2>Choose a question</h2><label>Question<select id="problem-choice"></select></label><button class="button primary" id="load-specific" value="default">Load question</button></form></dialog>
+  <dialog id="exam-dialog"><form method="dialog" class="dialog-card"><button class="dialog-close" value="cancel" aria-label="Close">×</button><h2>Timed challenge settings</h2><label>Number of questions<select id="exam-length"><option>5</option><option selected>10</option><option>15</option></select></label><label>Time limit<select id="exam-minutes"><option value="10">10 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option><option value="180">3 hours</option></select></label><button class="button primary" id="begin-exam" value="default">Start challenge</button></form></dialog>
+  <script src="auth.js"></script><script src="trainers.js"></script>
 </body>
 </html>
