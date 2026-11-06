@@ -1,0 +1,88 @@
+(() => {
+  const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+  const storageKey = `pebblio_trainer_${user?.userId || 'guest'}`;
+
+  const readData = () => {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey) || '{}');
+    } catch (error) {
+      return {};
+    }
+  };
+
+  const writeData = (next) => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch (error) {
+      console.warn('Trainer data could not be saved:', error);
+    }
+  };
+
+  const defaults = {
+    streak: 12,
+    xp: 820,
+    accuracy: 88,
+    minutes: 58,
+    weeklyGoal: 72,
+    focus: 'Algebra drill',
+    completedToday: 3,
+    recent: ['Algebra sprint', 'Reading comprehension', 'Vocabulary review']
+  };
+
+  const state = { ...defaults, ...readData() };
+  const widget = document.querySelector('[data-trainer-widget]');
+
+  const render = () => {
+    if (!widget) return;
+
+    widget.innerHTML = `
+      <div class="panel hero-card" aria-live="polite">
+        <div class="mini">
+          <span class="tag">Practice</span>
+          <span class="date">Today</span>
+        </div>
+        <div class="stats-strip" style="margin-top:18px; grid-template-columns:repeat(2,minmax(0,1fr));">
+          <div class="stat">
+            <div class="stat__label">Streak</div>
+            <div class="stat__value" style="font-size:1.3rem;">${state.streak}d</div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">XP</div>
+            <div class="stat__value" style="font-size:1.3rem;">${state.xp}</div>
+          </div>
+        </div>
+        <div class="progress" style="margin-top:18px;">
+          <div class="progress__head">
+            <span>Weekly goal</span>
+            <strong>${state.weeklyGoal}%</strong>
+          </div>
+          <div class="progress__bar"><span style="width:${state.weeklyGoal}%"></span></div>
+        </div>
+        <div class="stack">
+          <div class="stack__item">
+            <div class="stack__meta">
+              <span class="dot"></span>
+              <div>
+                <div class="stack__title">${state.focus}</div>
+                <div class="stack__sub">${state.completedToday} sessions done</div>
+              </div>
+            </div>
+            <span class="pill">${state.accuracy}%</span>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  render();
+
+  window.pebblioTrainerWidget = {
+    getState: () => readData(),
+    update: (next) => {
+      const merged = { ...state, ...next };
+      Object.assign(state, merged);
+      writeData(state);
+      render();
+    }
+  };
+})();

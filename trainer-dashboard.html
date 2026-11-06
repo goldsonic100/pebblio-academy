@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pebblio Academy | Trainer Home</title>
+  <meta name="description" content="Choose an interactive Pebblio Academy practice trainer and follow your learning progress." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="trainers.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="brand__mark">P</div>
+        <div class="brand__text">Pebblio Academy</div>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="chip">Home</a>
+        <a href="dashboard.html" class="chip">Dashboard</a>
+        <a href="trainer-dashboard.html" class="chip chip--primary">Open Trainer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <span class="eyebrow">Practice + Progress</span>
+          <h1 class="h1">Build momentum with focused practice sessions.</h1>
+          <p class="lead">Train on the subjects that matter most with adaptive practice, streak tracking, and a tiny dashboard that keeps your learning flow moving.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="trainer-dashboard.html">Start training</a>
+            <a class="btn btn--ghost" href="dashboard.html">View student dashboard</a>
+          </div>
+
+          <div class="stats-strip" aria-label="Trainer stats overview">
+            <div class="stat">
+              <div class="stat__label">Practice streak</div>
+              <div class="stat__value">12d</div>
+            </div>
+            <div class="stat">
+              <div class="stat__label">Questions done</div>
+              <div class="stat__value">486</div>
+            </div>
+            <div class="stat">
+              <div class="stat__label">Accuracy</div>
+              <div class="stat__value">88%</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel hero-card" aria-label="Trainer progress snapshot">
+          <div class="mini">
+            <span class="tag">On track</span>
+            <span class="date">Updated today</span>
+          </div>
+
+          <div class="progress">
+            <div class="progress__head">
+              <span>Weekly target</span>
+              <strong>72%</strong>
+            </div>
+            <div class="progress__bar"><span></span></div>
+          </div>
+
+          <div class="stack">
+            <div class="stack__item">
+              <div class="stack__meta">
+                <span class="dot"></span>
+                <div>
+                  <div class="stack__title">Algebra sprint</div>
+                  <div class="stack__sub">14 questions left</div>
+                </div>
+              </div>
+              <span class="pill">Ready</span>
+            </div>
+
+            <div class="stack__item">
+              <div class="stack__meta">
+                <span class="dot dot--green"></span>
+                <div>
+                  <div class="stack__title">Reading quiz</div>
+                  <div class="stack__sub">+12 XP this week</div>
+                </div>
+              </div>
+              <span class="pill">+12 XP</span>
+            </div>
+
+            <div class="stack__item">
+              <div class="stack__meta">
+                <span class="dot dot--amber"></span>
+                <div>
+                  <div class="stack__title">Vocabulary review</div>
+                  <div class="stack__sub">3 lessons remaining</div>
+                </div>
+              </div>
+              <span class="pill">Review</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2>Choose a trainer</h2>
+          <p>Practice smarter, not longer.</p>
+        </div>
+
+        <div class="card-grid">
+          <article class="training-card">
+            <div class="training-card__icon">📐</div>
+            <h3>Math Trainer</h3>
+            <p>Work through problem sets, timed drills, and quick mastery checks across arithmetic, algebra, and geometry.</p>
+            <div class="training-card__footer">
+              <span class="pill">12 paths</span>
+              <a href="trainer-dashboard.html" class="btn btn--light">Open</a>
+            </div>
+          </article>
+
+          <article class="training-card">
+            <div class="training-card__icon">📚</div>
+            <h3>Reading Comprehension</h3>
+            <p>Improve inference, evidence, and speed through focused reading passages and comprehension drills.</p>
+            <div class="training-card__footer">
+              <span class="pill">8 paths</span>
+              <a href="trainer-dashboard.html" class="btn btn--light">Open</a>
+            </div>
+          </article>
+
+          <article class="training-card">
+            <div class="training-card__icon">🧠</div>
+            <h3>Vocabulary Builder</h3>
+            <p>Practice contextual clues, synonym recognition, and review cycles that keep word knowledge fresh.</p>
+            <div class="training-card__footer">
+              <span class="pill">10 paths</span>
+              <a href="trainer-dashboard.html" class="btn btn--light">Open</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container meta-row">
+        <div class="left-rail">
+          <div class="summary-box">
+            <h3>Today's focus</h3>
+            <div class="row-list">
+              <div class="row-item">
+                <span class="label">Algebra</span>
+                <span class="value">3 drills</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Reading</span>
+                <span class="value">2 passages</span>
+              </div>
+              <div class="row-item">
+                <span class="label">Vocabulary</span>
+                <span class="value">8 review cards</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="list-box">
+            <h3>Recent sessions</h3>
+            <div class="timeline">
+              <div class="timeline-item">
+                <span class="bullet"></span>
+                <div class="content">
+                  <div class="entry__title">Algebra sprint</div>
+                  <div class="time">12 min ago</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="bullet bullet--muted"></span>
+                <div class="content">
+                  <div class="entry__title">Reading warmup</div>
+                  <div class="time">Yesterday</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <span class="bullet bullet--muted"></span>
+                <div class="content">
+                  <div class="entry__title">Vocabulary check-in</div>
+                  <div class="time">2 days ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-rail">
+          <div class="plan-box">
+            <h3>How the trainer works</h3>
+            <ul>
+              <li>Choose a subject track and difficulty level.</li>
+              <li>Complete short practice sets with instant feedback.</li>
+              <li>Build streaks and unlock progress milestones.</li>
+            </ul>
+          </div>
+
+          <div class="summary-box">
+            <h3>Goal progress</h3>
+            <div class="goal">
+              <div class="progress-ring" aria-label="72 percent goal complete"></div>
+              <div class="goal__text">
+                <strong>72%</strong>
+                <span>of this week’s goal</span>
+              </div>
+            </div>
+            <div class="small-note">You are on pace to hit your weekly learning target.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
